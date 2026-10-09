@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/jobs")
@@ -18,18 +19,18 @@ public class JobApplicationController {
     }
 
     @PostMapping
-    public JobApplication addJob(@RequestBody JobApplication job) {
-        return service.addJob(job);
-    }
+public ResponseEntity<JobApplication> addJob(
+        @Valid @RequestBody JobApplication job) {
+    return ResponseEntity.ok(service.addJob(job));
+}
 
     
+@GetMapping
+public java.util.List<JobApplication> getAllJobs() {
+    return service.getAllJobs();
+}
 
-    @GetMapping
-    public java.util.List<JobApplication> getAllJobs() {
-        return service.getAllJobs();
-    }
 
-    
 @PutMapping("/{id}/status")
 public JobApplication updateStatus(
         @PathVariable Long id,
@@ -37,11 +38,9 @@ public JobApplication updateStatus(
 
     return service.updateStatus(id, status);
 }
-
 @DeleteMapping("/{id}")
 public ResponseEntity<String> deleteJob(@PathVariable Long id) {
     service.deleteJob(id);
     return ResponseEntity.ok("Job application deleted successfully");
 }
-
 }

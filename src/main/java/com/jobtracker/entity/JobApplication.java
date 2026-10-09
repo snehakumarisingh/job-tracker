@@ -1,6 +1,8 @@
 package com.jobtracker.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -11,9 +13,15 @@ public class JobApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Company name is required")
     private String companyName;
+
+    @NotBlank(message = "Job role is required")
     private String jobRole;
+
     private String status;
+
+    @NotNull(message = "Application date is required")
     private LocalDate applicationDate;
 
     public JobApplication() {

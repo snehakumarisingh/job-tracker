@@ -2,7 +2,11 @@ package com.jobtracker.service;
 
 import com.jobtracker.entity.JobApplication;
 import com.jobtracker.repository.JobApplicationRepository;
+import com.jobtracker.exception.ResourceNotFoundException;
+
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class JobApplicationService {
@@ -14,34 +18,44 @@ public class JobApplicationService {
     }
 
     public JobApplication addJob(JobApplication job) {
+
         if (job.getStatus() == null || job.getStatus().isBlank()) {
             job.setStatus("Applied");
         }
 
         if (job.getApplicationDate() == null) {
-            job.setApplicationDate(java.time.LocalDate.now());
+            job.setApplicationDate(LocalDate.now());
         }
 
         return repository.save(job);
     }
 
-    
-    public java.util.List<JobApplication> getAllJobs() {
-    return repository.findAll();
+    public List<JobApplication> getAllJobs() {
+        return repository.findAll();
+    }
+
+    public JobApplication updateStatus(Long id, String status) {
+
+        JobApplication job = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Job application not found with ID: " + id
+                        ));
+
+        job.setStatus(status);
+
+        return repository.save(job);
+    }
+
+    public void deleteJob(Long id) {
+
+        JobApplication job = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Job application not found with ID: " + id
+                        ));
+
+        repository.delete(job);
+    }
 }
 
-
-public JobApplication updateStatus(Long id, String status) {
-    JobApplication job = repository.findById(id)
-            .orElseThrow(() ->
-                    new RuntimeException("Job application not found"));
-
-    job.setStatus(status);
-    return repository.save(job);
-}
-
-public void deleteJob(Long id) {
-    repository.deleteById(id);
-}
-
-}
