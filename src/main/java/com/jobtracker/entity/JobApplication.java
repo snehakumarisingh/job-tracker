@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "job_applications")
@@ -19,6 +20,10 @@ public class JobApplication {
     @NotBlank(message = "Job role is required")
     private String jobRole;
 
+    @Pattern(
+    regexp = "Applied|Interview|Selected|Rejected",
+    message = "Status must be Applied, Interview, Selected, or Rejected"
+)
     private String status;
 
     @NotNull(message = "Application date is required")

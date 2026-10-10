@@ -34,18 +34,22 @@ public class JobApplicationService {
         return repository.findAll();
     }
 
-    public JobApplication updateStatus(Long id, String status) {
+   public JobApplication updateStatus(Long id, String status) {
 
-        JobApplication job = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Job application not found with ID: " + id
-                        ));
-
-        job.setStatus(status);
-
-        return repository.save(job);
+    if (status == null ||
+        !status.matches("Applied|Interview|Selected|Rejected")) {
+        throw new IllegalArgumentException(
+            "Status must be Applied, Interview, Selected, or Rejected"
+        );
     }
+
+    JobApplication job = repository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException(
+                    "Job application not found with ID: " + id));
+
+    job.setStatus(status);
+    return repository.save(job);
+}
 
     public void deleteJob(Long id) {
 
