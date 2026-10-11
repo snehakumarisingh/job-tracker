@@ -61,5 +61,14 @@ public class JobApplicationService {
 
         repository.delete(job);
     }
+
+    public List<JobApplication> searchByCompany(String companyName) {
+    return repository.findByCompanyNameContainingIgnoreCase(companyName);
+}
+
+public List<JobApplication> filterByStatus(String status) {
+    return repository.findByStatusIgnoreCase(status);
+}
+
 }
 

@@ -3,6 +3,9 @@ package com.jobtracker.controller;
 import com.jobtracker.entity.JobApplication;
 import com.jobtracker.service.JobApplicationService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,5 +45,18 @@ public JobApplication updateStatus(
 public ResponseEntity<String> deleteJob(@PathVariable Long id) {
     service.deleteJob(id);
     return ResponseEntity.ok("Job application deleted successfully");
+}
+@GetMapping("/search")
+public ResponseEntity<List<JobApplication>> searchByCompany(
+        @RequestParam String companyName) {
+
+    return ResponseEntity.ok(service.searchByCompany(companyName));
+}
+
+@GetMapping("/filter")
+public ResponseEntity<List<JobApplication>> filterByStatus(
+        @RequestParam String status) {
+
+    return ResponseEntity.ok(service.filterByStatus(status));
 }
 }
