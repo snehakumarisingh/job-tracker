@@ -65,4 +65,8 @@ public ResponseEntity<Map<String, Long>> getApplicationStats() {
     return ResponseEntity.ok(service.getApplicationStats());
 }
 
+@GetMapping("/{id}")
+public ResponseEntity<JobApplication> getJobById(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getJobById(id));
+}
 }

@@ -46,22 +46,13 @@ public class JobApplicationService {
         );
     }
 
-    JobApplication job = repository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException(
-                    "Job application not found with ID: " + id));
-
+    JobApplication job = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Job application not found with ID: " + id));
     job.setStatus(status);
     return repository.save(job);
 }
 
     public void deleteJob(Long id) {
-
-        JobApplication job = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Job application not found with ID: " + id
-                        ));
-
+        JobApplication job = repository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Job application not found with ID: " + id));
         repository.delete(job);
     }
 
@@ -83,6 +74,10 @@ public Map<String, Long> getApplicationStats() {
     stats.put("rejected", repository.countByStatusIgnoreCase("Rejected"));
 
     return stats;
+}
+
+public JobApplication getJobById(Long id) {
+    return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Job application not found with ID: " + id));
 }
 }
 
